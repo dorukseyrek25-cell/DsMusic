@@ -3,218 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Müzik Akademisi & Dünya Radyosu</title>
+    <title>Rengarenk Müzik Dünyası v2</title>
     <style>
-        /* 1. GELİŞMİŞ HAREKETLİ ARKA PLAN */
+        /* CANLI VE HAREKETLİ ARKA PLAN */
         body {
             margin: 0;
-            font-family: 'Poppins', sans-serif;
-            color: #fff;
-            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #00d2ff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            text-align: center;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
-            animation: aurora 20s ease infinite;
-            overflow-x: hidden;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
         }
 
-        @keyframes aurora {
+        @keyframes gradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        .main-wrapper {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
-        }
+        .container { padding: 40px 20px; }
 
-        /* 2. NEON BAŞLIK */
-        h1 {
-            font-size: 3.5rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            text-shadow: 0 0 10px #00d2ff, 0 0 20px #00d2ff, 0 0 40px #00d2ff;
-            margin-bottom: 10px;
-        }
-
-        .subtitle { font-style: italic; opacity: 0.8; margin-bottom: 50px; }
-
-        /* 3. MÜZİK KULAĞI (TAM OKTAV PİYANO) */
-        .piano-container {
-            background: rgba(255, 255, 255, 0.1);
+        /* MÜZİK KULAĞI OYUNU */
+        .game-card {
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border-radius: 30px;
-            padding: 40px;
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            margin-bottom: 60px;
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
-        .keys {
+        .notalar-grubu {
             display: flex;
-            justify-content: center;
             flex-wrap: wrap;
+            justify-content: center;
             gap: 10px;
-            margin: 25px 0;
+            margin-top: 20px;
         }
 
-        .key {
-            background: white;
-            color: black;
-            padding: 20px;
-            width: 60px;
-            height: 150px;
-            border-radius: 0 0 10px 10px;
+        .btn {
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: none;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.2s;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            border: none;
-        }
-
-        .key:hover { transform: translateY(5px); background: #00d2ff; color: white; }
-        .key:active { background: #ff00ff; }
-
-        #master-play-btn {
-            background: #ff00ff;
-            color: white;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-size: 1.5rem;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 0 20px #ff00ff;
+            font-size: 1rem;
             transition: 0.3s;
         }
 
-        #master-play-btn:hover { transform: scale(1.1); box-shadow: 0 0 40px #ff00ff; }
+        .nota-btn { background: white; color: #333; min-width: 60px; }
+        .nota-btn:hover { background: #ffd1ff; transform: scale(1.1); }
 
-        /* 4. DÜNYA MÜZİKLERİ BÖLÜMÜ */
-        .world-music {
-            margin-top: 80px;
+        #çal-btn {
+            background: #ffcc00;
+            color: black;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
         }
 
-        .playlist-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+        /* SPOTIFY PLAYER - ARTIK DÜZGÜN ÇALIŞACAK */
+        .player-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* 5. EKSTRA BÖLÜM: MÜZİK SÖZLERİ & MOTİVASYON */
-        .quote-box {
-            margin-top: 100px;
-            font-size: 1.5rem;
-            border-left: 5px solid #00d2ff;
-            padding: 20px;
-            background: rgba(0,0,0,0.2);
-        }
-
-        footer { margin-top: 100px; padding: 20px; opacity: 0.6; }
-
+        #durum { margin-top: 15px; font-size: 1.1rem; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="main-wrapper">
-    <h1>RENGÂRENK MÜZİK</h1>
-    <p class="subtitle">Kulağını eğit, dünyayı dinle, ruhunu renklendir.</p>
-
-    <div class="piano-container">
-        <h2>🎹 Kulak Eğitim Merkezi</h2>
-        <p>Aşağıdaki butona bas ve çalan notayı piyano üzerinden bul!</p>
+<div class="container">
+    <h1>🌈 Rengarenk Müzik Akademisi</h1>
+    
+    <div class="game-card">
+        <h2>👂 Müzik Kulağını Geliştir</h2>
+        <p>Butona bas, çalan notayı tahmin et!</p>
         
-        <button id="master-play-btn" onclick="playChallenge()">🎵 TESTİ BAŞLAT</button>
+        <button id="çal-btn" class="btn" onclick="yeniSoru()">🎵 Notayı Çal</button>
         
-        <div class="keys">
-            <button class="key" onclick="checkAnswer('Do')">Do</button>
-            <button class="key" onclick="checkAnswer('Re')">Re</button>
-            <button class="key" onclick="checkAnswer('Mi')">Mi</button>
-            <button class="key" onclick="checkAnswer('Fa')">Fa</button>
-            <button class="key" onclick="checkAnswer('Sol')">Sol</button>
-            <button class="key" onclick="checkAnswer('La')">La</button>
-            <button class="key" onclick="checkAnswer('Si')">Si</button>
-            <button class="key" onclick="checkAnswer('İnce Do')">C2</button>
+        <div class="notalar-grubu">
+            <button class="btn nota-btn" onclick="kontrol('Do')">Do</button>
+            <button class="btn nota-btn" onclick="kontrol('Re')">Re</button>
+            <button class="btn nota-btn" onclick="kontrol('Mi')">Mi</button>
+            <button class="btn nota-btn" onclick="kontrol('Fa')">Fa</button>
+            <button class="btn nota-btn" onclick="kontrol('Sol')">Sol</button>
+            <button class="btn nota-btn" onclick="kontrol('La')">La</button>
+            <button class="btn nota-btn" onclick="kontrol('Si')">Si</button>
         </div>
-        
-        <h3 id="game-status">Hazır mısın?</h3>
+        <div id="durum">Hazır mısın?</div>
     </div>
 
-    <div class="world-music">
-        <h2>🌍 Dünya Listeleri</h2>
-        <p>Telif hakkı olmadan, en güncel hitleri doğrudan buradan dinle.</p>
-        
-        <div class="playlist-grid">
-            <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGvPBm9s?utm_source=generator&theme=0" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-            
-            <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGvYBM31?utm_source=generator&theme=0" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        </div>
+    <h2>🎶 Siteden Ayrılmadan Dinle</h2>
+    <div class="player-container">
+        <iframe src="https://open.spotify.com/embed/playlist/37i9dQZEVXbMDoHDw32t7c?utm_source=generator" 
+                width="100%" height="380" frameBorder="0" allowfullscreen="" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     </div>
-
-    <div class="quote-box">
-        "Müzik, kelimelerin bittiği yerde başlar." - Heine
-    </div>
-
-    <footer>
-        &copy; 2024 Rengarenk Müzik Sitesi | Kodsuz Tasarım Mucizesi
-    </footer>
 </div>
 
 <script>
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    // TÜM NOTALARIN FREKANSLARI
-    const notes = {
-        'Do': 261.63,
-        'Re': 293.66,
-        'Mi': 329.63,
-        'Fa': 349.23,
-        'Sol': 392.00,
-        'La': 440.00,
-        'Si': 493.88,
-        'İnce Do': 523.25
+    const frekanslar = {
+        'Do': 261.6, 'Re': 293.7, 'Mi': 329.6, 'Fa': 349.2, 'Sol': 392.0, 'La': 440.0, 'Si': 493.9
     };
+    let secilenNota = "";
 
-    let targetNote = "";
-
-    function playNote(freq) {
+    function sesCikar(frekans) {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = 'sine'; // Daha temiz, flüt benzeri bir ses
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(frekans, audioCtx.currentTime);
         gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 1.5);
+        osc.stop(audioCtx.currentTime + 1);
     }
 
-    function playChallenge() {
-        const keys = Object.keys(notes);
-        targetNote = keys[Math.floor(Math.random() * keys.length)];
-        playNote(notes[targetNote]);
-        document.getElementById('game-status').innerText = "Dinle ve seç...";
-        document.getElementById('game-status').style.color = "#00d2ff";
+    function yeniSoru() {
+        const notalar = Object.keys(frekanslar);
+        secilenNota = notalar[Math.floor(Math.random() * notalar.length)];
+        sesCikar(frekanslar[secilenNota]);
+        document.getElementById('durum').innerText = "Dinliyor...";
+        document.getElementById('durum').style.color = "white";
     }
 
-    function checkAnswer(guess) {
-        if (!targetNote) {
-            alert("Önce 'Testi Başlat' butonuna basmalısın!");
-            return;
-        }
-
-        if (guess === targetNote) {
-            document.getElementById('game-status').innerText = "⭐ HARİKA! Doğru Nota: " + targetNote;
-            document.getElementById('game-status').style.color = "#2ecc71";
-            // Başarılı olunca bir kutlama sesi çıkaralım
-            playNote(notes[guess]);
+    function kontrol(tahmin) {
+        if (!secilenNota) return;
+        if (tahmin === secilenNota) {
+            document.getElementById('durum').innerText = "✅ DOĞRU! Nota: " + secilenNota;
+            document.getElementById('durum').style.color = "#2ed573";
         } else {
-            document.getElementById('game-status').innerText = "❌ Tekrar Dene! Yanlış tahmin.";
-            document.getElementById('game-status').style.color = "#e74c3c";
+            document.getElementById('durum').innerText = "❌ Yanlış, tekrar dinle!";
+            document.getElementById('durum').style.color = "#ff4757";
         }
     }
 </script>
