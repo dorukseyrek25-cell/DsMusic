@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knk Müzik Sitesi</title>
+    <style>
+        body { font-family: Arial; margin:0; padding:0; background: #f2f2f2; }
+        header { background:#ff4d4d; color:white; padding:20px; text-align:center;}
+        .songs { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:20px; }
+        .song-card { background:white; padding:15px; border-radius:10px; width:200px; text-align:center; }
+        .song-card img { width:100%; border-radius:10px; }
+        audio { width:100%; margin-top:10px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Knk Müzik Dünyası</h1>
+</header>
+
+<div class="songs" id="song-list">
+    <!-- Şarkılar buraya JS ile eklenecek -->
+</div>
+
+<script>
+    const songs = [
+        { title:"Kusura Bakma", artist:"Doruk", cover:"https://upload.wikimedia.org/wikipedia/commons/4/45/Music_notes.png", audio:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+        { title:"Vibe Açık", artist:"Doruk", cover:"https://upload.wikimedia.org/wikipedia/commons/1/15/Music_icon.png", audio:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+        { title:"Gülüşüm 100 Watt", artist:"Doruk", cover:"https://upload.wikimedia.org/wikipedia/commons/4/45/Music_notes.png", audio:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
+    ];
+
+    const songList = document.getElementById("song-list");
+
+    songs.forEach(song => {
+        const card = document.createElement("div");
+        card.className = "song-card";
+        card.innerHTML = `
+            <img src="${song.cover}" alt="${song.title}">
+            <h3>${song.title}</h3>
+            <p>${song.artist}</p>
+            <audio controls>
+                <source src="${song.audio}" type="audio/mpeg">
+            </audio>
+        `;
+        songList.appendChild(card);
+    });
+</script>
+
+</body>
+</html>
