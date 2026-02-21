@@ -3,48 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knk Müzik Sitesi</title>
+    <title>Rengarenk Müzik Dünyası</title>
     <style>
-        body { font-family: Arial; margin:0; padding:0; background: #f2f2f2; }
-        header { background:#ff4d4d; color:white; padding:20px; text-align:center;}
-        .songs { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:20px; }
-        .song-card { background:white; padding:15px; border-radius:10px; width:200px; text-align:center; }
-        .song-card img { width:100%; border-radius:10px; }
-        audio { width:100%; margin-top:10px; }
+        /* 1. RENGARENK ARKA PLAN ANİMASYONU */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            text-align: center;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #9b59b6);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            padding: 50px 20px;
+            background: rgba(0, 0, 0, 0.3); /* Yazıların okunması için hafif karartı */
+            min-height: 100vh;
+        }
+
+        h1 { font-size: 3rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+
+        /* 2. MÜZİK KULAĞI OYUNU ALANI */
+        .game-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 600px;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .note-btn {
+            background: white;
+            color: #333;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            margin: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .note-btn:hover {
+            transform: scale(1.1);
+            background: #f0f0f0;
+        }
+
+        #play-btn {
+            background: #ffcc00;
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* 3. MÜZİK DİNLEME ALANI (SPOTIFY) */
+        .music-player {
+            margin-top: 50px;
+        }
+
+        iframe {
+            border-radius: 12px;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+        }
+
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Knk Müzik Dünyası</h1>
-</header>
+<div class="container">
+    <h1>🌈 Rengarenk Müzik Dünyası</h1>
+    <p>Burada hem müzik dinleyebilir hem de kulağını eğitebilirsin!</p>
 
-<div class="songs" id="song-list">
-    <!-- Şarkılar buraya JS ile eklenecek -->
+    <div class="game-section">
+        <h2>👂 Müzik Kulağı Testi</h2>
+        <p>Hangi notanın çaldığını tahmin edebilir misin?</p>
+        <button id="play-btn" class="note-btn" onclick="playRandomNote()">🎵 Notayı Çal</button>
+        <div id="options">
+            <button class="note-btn" onclick="checkAnswer('Do')">Do</button>
+            <button class="note-btn" onclick="checkAnswer('Sol')">Sol</button>
+            <button class="note-btn" onclick="checkAnswer('Mi')">Mi</button>
+        </div>
+        <p id="result"></p>
+    </div>
+
+    <div class="music-player">
+        <h2>🎶 Dünyadan Müzikler</h2>
+        <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGvPBm9s?utm_source=generator&theme=0" 
+                width="80%" height="352" frameBorder="0" allowfullscreen="" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+        </iframe>
+    </div>
 </div>
 
 <script>
-    const songs = [
-        { title:"Kusura Bakma", artist:"Doruk", cover:"https://upload.wikimedia.org/wikipedia/commons/4/45/Music_notes.png", audio:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-        { title:"Vibe Açık", artist:"Doruk", cover:"https://upload.wikimedia.org/wikipedia/commons/1/15/Music_icon.png", audio:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-        { title:"Gülüşüm 100 Watt", artist:"Doruk", cover:"https://upload.wikimedia.org/wikipedia/commons/4/45/Music_notes.png", audio:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
-    ];
+    // BASİT SES SENTEZLEYİCİ (Kodla ses üretme)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    const notes = {
+        'Do': 261.63,
+        'Mi': 329.63,
+        'Sol': 392.00
+    };
 
-    const songList = document.getElementById("song-list");
+    let lastNote = "";
 
-    songs.forEach(song => {
-        const card = document.createElement("div");
-        card.className = "song-card";
-        card.innerHTML = `
-            <img src="${song.cover}" alt="${song.title}">
-            <h3>${song.title}</h3>
-            <p>${song.artist}</p>
-            <audio controls>
-                <source src="${song.audio}" type="audio/mpeg">
-            </audio>
-        `;
-        songList.appendChild(card);
-    });
+    function playNote(frequency) {
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscillator.type = 'triangle'; // Piyano benzeri yumuşak ses
+        oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+        
+        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 1);
+    }
+
+    function playRandomNote() {
+        const keys = Object.keys(notes);
+        lastNote = keys[Math.floor(Math.random() * keys.length)];
+        playNote(notes[lastNote]);
+        document.getElementById('result').innerText = "Dinliyor...";
+    }
+
+    function checkAnswer(guess) {
+        if (lastNote === "") {
+            document.getElementById('result').innerText = "Önce notayı çalmalısın!";
+            return;
+        }
+        
+        if (guess === lastNote) {
+            document.getElementById('result').innerText = "✅ Harika! Doğru Tahmin: " + lastNote;
+            document.getElementById('result').style.color = "#2ecc71";
+        } else {
+            document.getElementById('result').innerText = "❌ Yanlış, tekrar dene!";
+            document.getElementById('result').style.color = "#e74c3c";
+        }
+    }
 </script>
 
 </body>
